@@ -62,8 +62,8 @@ class TodoContorllerTest {
 
         //given
         List<TodoVo> mockList = new ArrayList<>();
-        mockList.add(new TodoVo(1, "테스트", "2023", null));
-        mockList.add(new TodoVo(2, "테스트2", "2022", "abc.jpg"));
+        //mockList.add(new TodoVo(1, "테스트", "2023", null));
+        //.add(new TodoVo(2, "테스트2", "2022", "abc.jpg"));
         given(service.selTodo()).willReturn(mockList);
 
         //when

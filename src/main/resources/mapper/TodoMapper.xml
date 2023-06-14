@@ -16,7 +16,7 @@
 
     <update id="updFinish">
         <selectKey keyProperty="finishYn" resultType="TodoEntity" order="AFTER">
-            SELECT finish_yn FROM t_todo WHERE itodo = #{itodo}
+            SELECT finish_yn finishYn FROM t_todo WHERE itodo = #{itodo}
         </selectKey>
 
         UPDATE t_todo

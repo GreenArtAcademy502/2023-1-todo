@@ -1,5 +1,7 @@
 package com.green.todoapp;
 
+import com.google.gson.Gson;
+import com.green.todoapp.model.TodoFinishDto;
 import com.green.todoapp.model.TodoInsDto;
 import com.green.todoapp.model.TodoVo;
 import org.junit.jupiter.api.DisplayName;
@@ -17,6 +19,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -42,7 +45,12 @@ class TodoContorllerTest {
         given(service.insTodo(any(TodoInsDto.class))).willReturn(3);
 
         //when - 실제 실행
-        String json = "{ \"ctnt\": \"빨래 개기\" }";
+        TodoInsDto dto = new TodoInsDto();
+        dto.setCtnt("빨래 개기");
+
+        Gson gson = new Gson();
+        //String json = "{ \"ctnt\": \"빨래 개기\" }";
+        String json = gson.toJson(dto);
         ResultActions ra = mvc.perform(post("/api/todo")
                                         .content(json)
                                         .contentType(MediaType.APPLICATION_JSON));
@@ -77,5 +85,43 @@ class TodoContorllerTest {
         .andExpect(jsonPath("$[0].ctnt").value("테스트"))
         .andDo(print());
         verify(service).selTodo();
+    }
+
+    @Test
+    @DisplayName("TODO - 완료처리 토글")
+    void patchTodo() throws Exception {
+        given(service.updFinish(any())).willReturn(1);
+
+        Gson gson = new Gson();
+
+        TodoFinishDto dto = new TodoFinishDto();
+        dto.setItodo(1);
+
+        String json = gson.toJson(dto);
+        ResultActions ra =  mvc.perform(patch("/api/todo")
+                        .content(json)
+                        .contentType(MediaType.APPLICATION_JSON));
+
+        ra.andExpect(status().isOk())
+        .andExpect(content().string("1"))
+        .andDo(print());
+        verify(service).updFinish(any());
+    }
+
+    @Test
+    @DisplayName("TODO - 삭제")
+    void deleteTodo() throws Exception {
+        int itodo = 10;
+        given(service.delTodo(anyInt())).willReturn(itodo);
+
+
+        ResultActions ra = mvc.perform(delete("/api/todo")
+                                        .param("itodo", String.valueOf(itodo)));
+
+        ra.andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf(itodo)))
+                .andDo(print());
+
+        verify(service).delTodo(anyInt());
     }
 }

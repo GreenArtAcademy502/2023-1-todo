@@ -1,6 +1,7 @@
 package com.green.todoapp;
 
 import com.green.todoapp.model.TodoEntity;
+import com.green.todoapp.model.TodoFinishDto;
 import com.green.todoapp.model.TodoInsDto;
 import com.green.todoapp.model.TodoVo;
 import org.junit.jupiter.api.DisplayName;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -59,5 +61,37 @@ class TodoServiceTest {
         assertEquals(mockList, actualList);
 
         verify(mapper).selTodo();
+    }
+
+    @Test
+    @DisplayName("TodoService - Todo 완료처리 토글")
+    void updFinish() {
+        //given
+        TodoFinishDto dto = new TodoFinishDto();
+        dto.setItodo(1);
+        TodoEntity entity = new TodoEntity();
+        entity.setFinishYn(1);
+        entity.setItodo(dto.getItodo());
+
+        //when
+        when(mapper.updFinish(entity)).thenReturn(1);
+        int result = service.updFinish(dto);
+
+        //then
+        assertEquals(0, result);
+
+        verify(mapper).updFinish(any());
+    }
+
+    @Test
+    @DisplayName("TodoService - Todo 삭제")
+    void delTodo() {
+        int expectedResult = 1;
+        when(mapper.delTodo(any(TodoEntity.class))).thenReturn(expectedResult);
+
+        int result = service.delTodo(anyInt());
+        assertEquals(expectedResult, result);
+
+        verify(mapper).delTodo(any(TodoEntity.class));
     }
 }

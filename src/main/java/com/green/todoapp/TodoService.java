@@ -41,4 +41,11 @@ public class TodoService {
         System.out.println(entity.getFinishYn());
         return entity.getFinishYn();
     }
+
+    public int delTodo(int itodo) {
+        TodoEntity entity = new TodoEntity();
+        entity.setItodo(itodo);
+
+        return mapper.delTodo(entity);
+    }
 }

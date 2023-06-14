@@ -25,4 +25,10 @@
         WHERE itodo = #{itodo}
     </update>
 
+    <update id="delTodo">
+        UPDATE t_todo
+        SET del_yn = 1
+        WHERE itodo = #{itodo}
+    </update>
+
 </mapper>

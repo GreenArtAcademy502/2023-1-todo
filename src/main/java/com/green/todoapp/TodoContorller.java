@@ -34,4 +34,9 @@ public class TodoContorller {
     public int patchTodo(@RequestBody TodoFinishDto dto) {
         return service.updFinish(dto);
     }
+
+    @DeleteMapping
+    public int deleteTodo(@RequestParam int itodo) {
+        return service.delTodo(itodo);
+    }
 }

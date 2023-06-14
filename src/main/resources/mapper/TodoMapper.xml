@@ -6,4 +6,23 @@
         INSERT INTO t_todo
         SET ctnt = #{ctnt}
     </insert>
+
+    <select id="selTodo">
+        SELECT itodo, ctnt, created_at createdAt, pic, finish_yn finishYn
+             , finished_at finishedAt
+        FROM t_todo
+        WHERE del_yn = 0
+    </select>
+
+    <update id="updFinish">
+        <selectKey keyProperty="finishYn" resultType="TodoEntity" order="AFTER">
+            SELECT finish_yn FROM t_todo WHERE itodo = #{itodo}
+        </selectKey>
+
+        UPDATE t_todo
+        SET finish_yn = 1 - finish_yn
+        , finished_at = if(finished_at is NULL, CURRENT_TIMESTAMP(), NULL)
+        WHERE itodo = #{itodo}
+    </update>
+
 </mapper>

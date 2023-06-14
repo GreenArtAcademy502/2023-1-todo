@@ -3,6 +3,6 @@ package com.green.todoapp.model;
 import lombok.Data;
 
 @Data
-public class TodoInsDto {
-    private String ctnt;
+public class TodoFinishDto {
+    private int itodo;
 }
